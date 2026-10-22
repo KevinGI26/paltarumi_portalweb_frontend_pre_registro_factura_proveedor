@@ -1,7 +1,7 @@
 _schema-version: "3.2"
 ID: paltarumi-portalweb-registroprefactura
-version: 0.0.1
-description: Registro Pre Factura Contador (HTML5 app para SAP Build Work Zone)
+version: 0.0.2
+description: Registro Pre Factura Contador - HTML5 SAPUI5
 
 parameters:
   enable-parallel-deployments: true
@@ -13,7 +13,7 @@ build-parameters:
         - npm install
 
 modules:
-  # 1) Destinations para que Work Zone encuentre la app en el HTML5 repo
+  # 1. Destination para HTML5 Repository
   - name: registroprefactura-destination-content
     type: com.sap.application.content
     requires:
@@ -24,10 +24,6 @@ modules:
         parameters:
           service-key:
             name: registroprefactura-repo-host-key
-      - name: registroprefactura-uaa
-        parameters:
-          service-key:
-            name: registroprefactura-uaa-key
     parameters:
       content:
         instance:
@@ -36,16 +32,11 @@ modules:
               ServiceInstanceName: registroprefactura-html5-srv
               ServiceKeyName: registroprefactura-repo-host-key
               sap.cloud.service: paltarumi.portalweb.registroprefactura
-            - Authentication: OAuth2UserTokenExchange
-              Name: registroprefactura_uaa
-              ServiceInstanceName: registroprefactura-xsuaa-srv
-              ServiceKeyName: registroprefactura-uaa-key
-              sap.cloud.service: paltarumi.portalweb.registroprefactura
-          existing_destinations_policy: ignore
+          existing_destinations_policy: update
     build-parameters:
       no-source: true
 
-  # 2) Sube el zip de la app al HTML5 repo
+  # 2. Publicar contenido en HTML5 Repository
   - name: registroprefactura-ui-deployer
     type: com.sap.application.content
     path: .
@@ -61,7 +52,7 @@ modules:
           name: registroprefactura-app
           target-path: resources/
 
-  # 3) La app (webapp/ -> dist/*.zip)
+  # 3. Compilar aplicación SAPUI5
   - name: registroprefactura-app
     type: html5
     path: .
@@ -73,6 +64,7 @@ modules:
       supported-platforms: []
 
 resources:
+  # Destination Service
   - name: registroprefactura-destination-service
     type: org.cloudfoundry.managed-service
     parameters:
@@ -81,16 +73,11 @@ resources:
       config:
         HTML5Runtime_enabled: true
         version: 1.0.0
+
+  # HTML5 Application Repository
   - name: registroprefactura-repo-host
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
       service-plan: app-host
       service-name: registroprefactura-html5-srv
-  - name: registroprefactura-uaa
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      service-name: registroprefactura-xsuaa-srv
-      path: ./xs-security.json
