@@ -1,0 +1,418 @@
+<c:FragmentDefinition xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:u="sap.ui.unified"
+	xmlns:ui="sap.ui.unified"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:c="sap.ui.core"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<Dialog id="dialogAgregarPreFacturaPeru" title="Pre Registro Factura Peru" icon="sap-icon://sales-order" titleAlignment="Center" class = "portalScope">
+		<content>
+			<VBox class="sapUiSmallMargin">
+				<f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="2" columnsXL="2">
+					<f:content>
+
+						<Label text="Nro. Serie / Correlativo" />
+						<Input onkeyup="this.value = this.value.toUpperCase();" required="true" valueLiveUpdate="true" fieldGroupIds="onOpenAddInput" 
+						type="Text" valueState="None" showValueHelp="false" app:zeroPad="{localModel>/LONGSERIE}" textAlign="Right" value="{localModel>/preRegistro/NRO_SERIE}" 
+						editable="{localModel>/preRegistro/Editable}" enabled="true" visible="true" width="auto" valueHelpOnly="true" 
+						maxLength="{localModel>/LONGSERIE}" id="NRO_SERIE" change="onInputChangeNroSerie" />
+
+						<Input valueLiveUpdate="true" required="true" fieldGroupIds="onOpenAddInput" type="Text" showValueHelp="false" 
+						app:zeroPad="{localModel>/LONGCORRELATIVO}" value="{localModel>/preRegistro/NRO_COMPROBANTE}" enabled="true" 
+						editable="{localModel>/preRegistro/Editable}" visible="true" width="auto" valueHelpOnly="true" maxLength="{localModel>/LONGCORRELATIVO}"
+						id="COMPROBANTE" change="onInputChangeCorrelativo" />
+						<Label text="Fecha de Cont. Factura" />
+						<!-- <Input id="txtfechacontPeru" value="{path:'localModel>/datosCabecera/sFechaContable'}" textAlign="End" enabled="false"/> -->
+
+						<DatePicker textAlign="Right" dateValue="{path: 'localModel>/preRegistro/FECHA_BASE'}" change="handleChangeinicial" id="FECHA_BASE" displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy" editable="false"/>
+						<Label text="Fecha Emisión" />
+						<DatePicker required="true" editable="{localModel>/preRegistro/Editable}" textAlign="Right" dateValue="{path: 'localModel>/preRegistro/FECHA_EMISION'}" change="handleChangeinicial" id="FECHA_EMISION" displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy"/>
+						<Label text="Importe + Igv" />
+						<Input value="{path: 'localModel>/preRegistro/IMPORTE' , formatter: '.formatter.formatoMoneda'}" change="onChangeImporte" id="IMPORTE" type="Text" showValueHelp="false" editable="false" enabled="true" visible="true" textAlign="Right" width="auto" valueHelpOnly="false" maxLength="0"/>
+						<Input value="{localModel>/preRegistro/MONEDA}" type="Text" showValueHelp="false" editable="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" maxLength="0"/>
+						
+						
+						<Label text="Clase de Documento" />
+						<Select id="ncboClaseDocumento" forceSelection="true" change="onSelectChange" items="{
+                                path:'localModel>/comboClaseDocumento' 
+                            }" enabled="false" selectedKey="{
+                            path: 'localModel>/selectClaseDocumento'
+                            }">
+							<c:Item key="{localModel>id}" text="{localModel>name}" enabled="{= ${localModel>id} === '0' ? false : true }"></c:Item>
+						</Select>
+						<Label text="Condición de Pago" />
+						<Input value="{localModel>/preRegistro/CONDICIONPAGO} {localModel>/preRegistro/DESCRIPCION_CONDICION_PAGO}" id="CONDICIONPAGO" type="Text" showValueHelp="false" editable="false" textAlign="Left" enabled="true" visible="true" width="auto" valueHelpOnly="false" maxLength="0"/>
+						<!-- <Label text="Indicador de Impuesto" />
+
+						<ComboBox items="{ path: 'localModel>/ListaImpuestos' }" selectedKey="{localModel>/preRegistro/TIPO_IMPUESTO}" id="cboTipoImpuesto" selectionChange="onChangeCboImporte" editable="false" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
+							<items>
+								<c:Item key="{localModel>key}" text="{localModel>key} - {localModel>text}"/>
+							</items>
+						</ComboBox> -->
+
+						<Label text="Detracción" />
+
+						<ComboBox 
+						editable = "{localModel>/preRegistro/EDITABLE_DETRACCION}"
+						 enabled="true" placeholder="Seleccione el tipo detracción" visible="true" width="auto" valueState="None" maxWidth="100%" items="{ path: 'localModel>/ListaDetracciones'}"  selectedKey="{localModel>/preRegistro/TIPO_DETRACCION}" change="fnChanceTipoDetraccion" id="cboDetraccion">
+							<items>
+								<c:Item key="{localModel>key}" text="{localModel>text}" enabled="true"/>
+							</items>
+						</ComboBox>
+
+						<Label text="Impuesto" />
+						<Input value="{path: 'localModel>/preRegistro/IMPUESTOIMPORTE' , formatter: '.formatter.formatoMoneda'}" id="IMPUESTOIMPORTE" change="onChangeImporte" type="Text" showValueHelp="false" editable="false" textAlign="Right" enabled="true" visible="true" width="auto" valueHelpOnly="false" maxLength="0"/>
+						<Input value="{localModel>/preRegistro/MONEDA}" type="Text" showValueHelp="false" editable="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" maxLength="0"/>
+
+						
+						<!-- <Select id="slDetraccionPeru" forceSelection="true" change="onSelectChange" items="{
+                                path:'localModel>/comboDetraccion'
+                            }" selectedKey="{
+                            path: 'localModel>/selectDetraccion'
+                            }">
+                                <c:Item key="{localModel>id}" text="{localModel>name}" enabled="{= ${localModel>id} === '0' ? false : true }"></c:Item>
+                        </Select> -->
+
+					</f:content>
+				</f:SimpleForm>
+			</VBox>
+		</content>
+		<content>
+			<IconTabBar id="iconTabBarPeru" headerMode="Inline" class="sapUiResponsiveContentPadding" selectedKey="{ path: 'formularioSimple>/tabSelect'}">
+				<items>
+					<IconTabFilter icon="sap-icon://information" key="0" text="Artículo">
+						<Table id="tblViewRegistro" backgroundDesign="Solid" showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true"  sticky="HeaderToolbar,ColumnHeaders" inset="false" 
+						class="sapFDynamicPageAlignContent" alternateRowColors="true" width="auto" 
+						items="{ path: 'localModel>/selectedRowsPreFactura' 
+									}">
+							<headerToolbar>
+								<OverflowToolbar>
+									<Title text="Total Documentos ({= ${localModel>/selectedRowsPreFactura}.length })" level="H2"/>
+								</OverflowToolbar>
+							</headerToolbar>
+							<columns>
+								
+
+								<Column width="10%" hAlign="Left" vAlign="Center" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+										<header>
+											<Text text="OC. " width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										</header>
+										<footer/>
+									</Column>
+
+
+					<Column width="10%" hAlign="Left" vAlign="Center" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+										<header>
+											<Text text="Pos. OC. " width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										</header>
+										<footer/>
+									</Column>
+
+								<Column minScreenWidth="Tablet" demandPopin="true" width="7em" hAlign="Center">
+									<Text text="Nro Guia" />
+								</Column>
+								<Column minScreenWidth="Tablet" demandPopin="true" width="10em">
+									<Text text="Descripcion artículo/servicio" />
+								</Column>
+								<Column minScreenWidth="Desktop" demandPopin="true" width="6em">
+									<Text text="Fecha Entrega" />
+								</Column>
+								<Column minScreenWidth="Desktop" demandPopin="true" width="6em" hAlign="Center">
+									<Text text="Doc. de Mercancia" />
+								</Column>
+
+								<Column minScreenWidth="Tablet" width="3em" hAlign="Center">
+									<Text text="Nro" />
+								</Column>
+								
+								<Column minScreenWidth="Desktop" demandPopin="true" width="5em" hAlign="Center">
+									<Text text="Cant. Entrega" />
+								</Column>
+								<Column minScreenWidth="Tablet" demandPopin="true" width="5em">
+									<Text text="Importe" />
+								</Column>
+
+								<Column minScreenWidth="Desktop" demandPopin="true" width="7em" hAlign="Center">
+									<Text text="Tipo Impuesto" />
+								</Column>
+
+								<Column minScreenWidth="Desktop" demandPopin="true" width="7em" hAlign="Center">
+									<Text text="Impuesto" />
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+
+									<Link text="{path : 'localModel>PEDIDO_REFERENCIA' }" textAlign="Begin" width="auto" target="_blank"
+												wrapping="false" enabled="true" visible="true" emphasized="false" subtle="false"/>
+
+
+
+										
+											
+											<Text text="{localModel>POS_PED_REFERENCIA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+
+										
+										<Text text="{localModel>NRO_GUIA_REMISION}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										<!-- <ObjectIdentifier title="{path : 'localModel>ARTICULO', formatter : '.formatter.formatoArticulo'} - {path :'localModel>DESCRIPCION_ARTICULO', formatter: '.formatter.capitalizar'}"/> -->
+										<ObjectIdentifier title="{path :'localModel>ARTICULO_DESC', formatter: '.formatter.capitalizar'}"/>
+										<Text text="{path: 'localModel>FECHA_ENTREGA', formatter: '.formatter.formatoFecha'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										<!-- <Link text="{path : 'localModel>NRO_PARTE_ENTRADA', formatter : '.formatter.formatoArticulo'}" enabled="true" visible="true" emphasized="false" subtle="false"/> -->
+										<!-- <Link text="{path : 'localModel>POS_PARTE_ENTRADA', formatter:'.formatter.formatoPosicion'}" textAlign="Begin" width="auto" target="_blank" wrapping="false" enabled="true" visible="true" emphasized="false" subtle="false"/> -->
+										<Text text="{path : 'localModel>NRO_PARTE_ENTRADA', formatter : '.formatter.formatoArticulo'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										<Text text="{path : 'localModel>POS_PARTE_ENTRADA', formatter : '.formatter.formatoPosicion'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+										<ObjectNumber number="{path: 'localModel>CANTIDAD_ENTREGADA', formatter:'.formatter.formatoCantidad'}" unit="{localModel>UNIDAD_MEDIDA}" emphasized="true" state="None"/>
+										<ObjectNumber number="{path:'localModel>IMPORTE', formatter:'.formatter.formatoMoneda'}" unit="{localModel>MONEDA}" emphasized="true" state="None"/>
+										
+										<ObjectIdentifier title="{path:'localModel>TIPO_IMPUESTO'}" />
+
+										<ObjectNumber number="{path:'localModel>IMPUESTO', formatter:'.formatter.formatoMoneda'}" unit="{localModel>MONEDA}" emphasized="true" state="None"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</IconTabFilter>
+					<!--><IconTabSeparator/><!-->
+					<IconTabFilter icon="sap-icon://pdf-attachment" key="1" text="Adjuntar PDF" visible = "false">
+						<Toolbar >
+							<ToolbarSpacer />
+							<u:FileUploader typeMissmatch="handleTypeMissmatch" fileType="pdf" id="idfileUploader" sameFilenameAllowed="true" buttonOnly="true" icon="sap-icon://add-document" buttonText="Adjuntar" change="handleFileUpload" iconFirst="true" uploadOnChange="true" style="Emphasized"/>
+						</Toolbar>
+						<Table width="100%" noDataText="Debe ingresar los documentos PDF." items="{localModel>/preRegistro/dataAttached}" mode="None" showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true">
+							<infoToolbar/>
+							<headerToolbar>
+								<!-- <Toolbar width="auto" height="46px" design="Transparent" visible="true" enabled="true">
+										<content>
+											<ToolbarSpacer width=""/>
+											
+										</content>
+										<tooltip/>
+									</Toolbar> -->
+							</headerToolbar>
+							<columns>
+								<Column width="5%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Nro." width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="20%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Nombre documento" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="55%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="false" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Texto descriptivo" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="5%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Tipo" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="8%" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Tamaño" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="8%" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Accion" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem type="Active">
+									<cells>
+										<Text text="{localModel>nro}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										<ObjectIdentifier width="35%" title="{localModel>nombreArchivo}" text="" titleActive="true" titlePress="viewImage" app:tipo="pdf" app:indexOf="{localModel>index}" visible="true"/>
+										<Text text="{localModel>descriArchivo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										<ObjectNumber number="{localModel>tipoArchivo}" unit="" emphasized="true" state="None"/>
+										<Text text="{localModel>sizeArchivo} Kb" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										<Link text="Eliminar" textAlign="Begin" press="onpressEliminar" app:indexOf="{localModel>index}" width="auto" target="_blank" wrapping="false" enabled="true" visible="true" emphasized="false" subtle="false"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</IconTabFilter>
+					<IconTabSeparator/>
+					<IconTabFilter icon="sap-icon://attachment-html" key="2" text="Adjuntar XML" visible = "false">
+						<Toolbar >
+							<ToolbarSpacer />
+							<!-- <Button text="Adjuntar" icon="sap-icon://add-document" press="onAdjuntarXML" ariaHasPopup="Dialog" /> -->
+							<u:FileUploader typeMissmatch="handleTypeMissmatchXML" fileType="xml" id="idfileUploaderXML" sameFilenameAllowed="true" buttonOnly="true" icon="sap-icon://add-document" buttonText="Adjuntar" change="handleFileUploadXMLPeru" iconFirst="true" uploadOnChange="true" style="Emphasized" enabled="{= ${localModel>/preRegistro/dataAttachedXML/length} === 1 ? false : true}"/>
+						</Toolbar>
+						<Table width="100%" noDataText="Debe ingresar el archivo XML." items="{localModel>/preRegistro/dataAttachedXML}" mode="None" showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true">
+							<infoToolbar/>
+							<headerToolbar>
+								<!-- <Toolbar width="auto" height="46px" design="Transparent" visible="true" enabled="true">
+										<content>
+											<ToolbarSpacer width=""/>
+											<u:FileUploader typeMissmatch="handleTypeMissmatchXML" fileType="xml" id="idfileUploaderXML1" sameFilenameAllowed="true" buttonOnly="true" icon="sap-icon://add-document" buttonText="Adjuntar" change="handleFileUploadXML" iconFirst="true" uploadOnChange="true" style="Emphasized" enabled="{= ${localModel>/preRegistro/dataAttachedXML/length} === 1 ? false : true}"/>
+										</content>
+										<tooltip/> 
+									</Toolbar> -->
+							</headerToolbar>
+							<columns>
+								<Column width="5%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Nro." width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="20%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Nombre documento" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="55%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="false" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Texto descriptivo" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="5%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Tipo" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="8%" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Tamaño" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="8%" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Accion" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem type="Active">
+									<cells>
+										<Text text="{localModel>nroXML}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										<ObjectIdentifier width="35%" title="{localModel>nombreArchivoXML}" text="" titleActive="true" titlePress="viewImage" app:tipo="xml" app:indexOf="{localModel>indexXML}" visible="true"/>
+										<Text text="{localModel>descriArchivoXML}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										<ObjectNumber number="{localModel>tipoArchivoXML}" unit="" emphasized="true" state="None"/>
+										<Text text="{localModel>sizeArchivoXML} Kb" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										<Link text="Eliminar" textAlign="Begin" press="onpressEliminarXML" app:indexOf="{localModel>indexXML}" width="auto" target="_blank" wrapping="false" enabled="true" visible="true" emphasized="false" subtle="false"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</IconTabFilter>
+					<IconTabFilter icon="sap-icon://attachment-html" key="3" text="Adjuntar Documentos">
+						<Toolbar >
+							<ToolbarSpacer />
+							<!-- <Button text="Adjuntar" icon="sap-icon://add-document" press="onAdjuntarXML" ariaHasPopup="Dialog" /> -->
+							<u:FileUploader typeMissmatch="handleTypeMissmatch" id="idfileUploaderDocs" sameFilenameAllowed="true" buttonOnly="true" icon="sap-icon://add-document" buttonText="Adjuntar" change="handleFileUploadDocs" iconFirst="true" uploadOnChange="true" style="Emphasized"/>
+						</Toolbar>
+						<Table width="100%" noDataText="Debe ingresar el archivo." items="{localModel>/preRegistro/dataAttached}" mode="None" showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true">
+							<infoToolbar/>
+							<headerToolbar>
+								<!-- <Toolbar width="auto" height="46px" design="Transparent" visible="true" enabled="true">
+										<content>
+											<ToolbarSpacer width=""/>
+											<u:FileUploader typeMissmatch="handleTypeMissmatchXML" fileType="xml" id="idfileUploaderXML1" sameFilenameAllowed="true" buttonOnly="true" icon="sap-icon://add-document" buttonText="Adjuntar" change="handleFileUploadXML" iconFirst="true" uploadOnChange="true" style="Emphasized" enabled="{= ${localModel>/preRegistro/dataAttachedXML/length} === 1 ? false : true}"/>
+										</content>
+										<tooltip/> 
+									</Toolbar> -->
+							</headerToolbar>
+							<columns>
+								<Column width="5%" hAlign="Left" vAlign="Center" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Nro." width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="20%" hAlign="Left" vAlign="Center" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Nombre documento" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="45%" hAlign="Left" vAlign="Center" minScreenWidth="Tablet" demandPopin="false" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Texto descriptivo" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="20%" hAlign="Center" vAlign="Center" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Clase de Documento" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="5%" hAlign="Left" vAlign="Center" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Tipo" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="8%" hAlign="Center" vAlign="Center" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Tamaño" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+								<Column width="8%" hAlign="Center" vAlign="Center" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<header>
+										<Text text="Accion" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</header>
+									<footer/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem type="Active">
+									<cells>
+										<Text text="{localModel>nroDoc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										<ObjectIdentifier width="35%" title="{localModel>nombreArchivoDoc}" text="" titleActive="true" titlePress="viewImage" app:indexOf="{localModel>indexDoc}" visible="true"/>
+										<Text text="{localModel>descriArchivoDoc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										<Select id="selectClaseDoc" forceSelection="true" change="onCambiarClaseDoc" items="{
+												path:'localModel>listaTipoDocumento' 
+												}" 
+												selectedKey="{
+												path: 'localModel>selectClaseDoc'
+												}"
+												enabled="{
+												path: 'localModel>enabledSelectClaseDoc'
+												}"
+												>
+										<c:Item key="{localModel>key}" text="{localModel>text}" ></c:Item>
+										</Select>
+										<ObjectNumber number="{localModel>tipoArchivoDocPrueba}" unit="" emphasized="true" state="None"/>
+										<Text text="{localModel>sizeArchivoDoc} Kb" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										<Link text="Eliminar" textAlign="Begin" press="onpressEliminarDocs" width="auto" target="_blank" wrapping="false" enabled="true" visible="true" emphasized="false" subtle="false"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+		</content>
+		<footer>
+			<Toolbar>
+				<content>
+					<ToolbarSpacer />
+					<Button icon="sap-icon://save" text="Guardar Factura" press="onPressGenerarRegistroFactura" type="Emphasized" />
+					<Button text="Cerrar" icon="sap-icon://close-command-field" press="onCloseCrearPreFacturaPeru" ariaHasPopup="Dialog" />
+				</content>
+			</Toolbar>
+		</footer>
+	</Dialog>
+</c:FragmentDefinition>

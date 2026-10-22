@@ -1,0 +1,629 @@
+<c:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:u="sap.ui.unified"
+    xmlns:ui="sap.ui.unified"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:c="sap.ui.core"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+>
+    <Dialog
+        id="dialogDetallePreFacturaPeru"
+        title="Pre Registro Factura Perú"
+        icon="sap-icon://sales-order"
+        titleAlignment="Center"
+    >
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <f:SimpleForm
+                    editable="true"
+                    layout="ColumnLayout"
+                    columnsM="1"
+                    columnsL="2"
+                    columnsXL="2"
+                >
+                    <f:content>
+                        <Label text="Nro. Serie / Correlativo" />
+                        <Input
+                            onkeyup="this.value = this.value.toUpperCase();"
+                            required="true"
+                            valueLiveUpdate="true"
+                            fieldGroupIds="onOpenAddInput"
+                            type="Text"
+                            valueState="None"
+                            showValueHelp="false"
+                            app:zeroPad="{localModel>/LONGSERIE}"
+                            textAlign="Right"
+                            value="{localModel>/preRegistro/NRO_SERIE}"
+                            editable="false"
+                            enabled="false"
+                            visible="true"
+                            width="auto"
+                            valueHelpOnly="true"
+                            maxLength="{localModel>/LONGSERIE}"
+                            id="NRO_SERIE2"
+                            change="onInputChangeNroSerie"
+                        />
+
+                        <Input
+                            valueLiveUpdate="true"
+                            required="true"
+                            fieldGroupIds="onOpenAddInput"
+                            type="Text"
+                            showValueHelp="false"
+                            app:zeroPad="{localModel>/LONGCORRELATIVO}"
+                            value="{localModel>/preRegistro/correlativo}"
+                            enabled="false"
+                            editable="false"
+                            visible="true"
+                            width="auto"
+                            valueHelpOnly="true"
+                            maxLength="{localModel>/LONGCORRELATIVO}"
+                            id="COMPROBANTE2"
+                            change="onInputChangeCorrelativo"
+                        />
+                        <Label text="Fecha de Cont. Factura" />
+                        <!-- <Input id="txtfechacontPeru" value="{path:'localModel>/datosCabecera/sFechaContable'}" textAlign="End" enabled="false"/> -->
+
+                        <DatePicker
+                            textAlign="Right"
+                            dateValue="{path: 'localModel>/preRegistro/FECHA_BASE'}"
+                            change="handleChangeinicial"
+                            id="FECHA_BASE2"
+                            displayFormat="dd/MM/yyyy"
+                            valueFormat="dd/MM/yyyy"
+                            editable="false"
+                        />
+                        <Label text="Fecha Emisión" />
+                        <DatePicker
+                            required="true"
+                            editable="false"
+                            enabled="false"
+                            textAlign="Right"
+                            dateValue="{path: 'localModel>/preRegistro/FECHA_EMISION'}"
+                            change="handleChangeinicial"
+                            id="FECHA_EMISION2"
+                            displayFormat="dd/MM/yyyy"
+                            valueFormat="dd/MM/yyyy"
+                        />
+                        <Label text="Importe + Igv" />
+                        <Input
+                            value="{path: 'localModel>/preRegistro/IMPORTE' , formatter: '.formatter.formatoMoneda'}"
+                            change="onChangeImporte"
+                            id="IMPORTE2"
+                            type="Text"
+                            showValueHelp="false"
+                            editable="false"
+                            enabled="true"
+                            visible="true"
+                            textAlign="Right"
+                            width="auto"
+                            valueHelpOnly="false"
+                            maxLength="0"
+                        />
+                        <Input
+                            value="{localModel>/preRegistro/MONEDA}"
+                            type="Text"
+                            showValueHelp="false"
+                            editable="false"
+                            enabled="true"
+                            visible="true"
+                            width="auto"
+                            valueHelpOnly="false"
+                            maxLength="0"
+                        />
+
+                        <Label text="Clase de Documento" />
+                        <Select
+                            id="ncboClaseDocumento2"
+                            forceSelection="true"
+                            change="onSelectChange"
+                            items="{
+                                path:'localModel>/comboClaseDocumento' 
+                            }"
+                            enabled="false"
+                            selectedKey="{
+                            path: 'localModel>/selectClaseDocumento'
+                            }"
+                        >
+                            <c:Item
+                                key="{localModel>id}"
+                                text="{localModel>name}"
+                                enabled="{= ${localModel>id} === '0' ? false : true }"
+                            />
+                        </Select>
+                        <Label text="Condición de Pago" />
+                        <Input
+                            value="{localModel>/preRegistro/CONDICIONPAGO} {localModel>/preRegistro/DESCRIPCION_CONDICION_PAGO}"
+                            id="CONDICIONPAGO2"
+                            type="Text"
+                            showValueHelp="false"
+                            editable="false"
+                            textAlign="Left"
+                            enabled="true"
+                            visible="true"
+                            width="auto"
+                            valueHelpOnly="false"
+                            maxLength="0"
+                        />
+                        <!-- <Label text="Indicador de Impuesto" />
+
+						<ComboBox items="{ path: 'localModel>/ListaImpuestos' }" selectedKey="{localModel>/preRegistro/TIPO_IMPUESTO}" id="cboTipoImpuesto" selectionChange="onChangeCboImporte" editable="false" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
+							<items>
+								<c:Item key="{localModel>key}" text="{localModel>key} - {localModel>text}"/>
+							</items>
+						</ComboBox> -->
+
+                        <Label text="Detracción" />
+
+                        <ComboBox
+                            editable="false"
+                            enabled="false"
+                            placeholder="Seleccione el tipo detracción"
+                            visible="true"
+                            width="auto"
+                            valueState="None"
+                            maxWidth="100%"
+                            items="{ path: 'localModel>/ListaDetracciones'}"
+                            selectedKey="{localModel>/preRegistro/TIPO_DETRACCION}"
+                            change="fnChanceTipoDetraccion"
+                            id="cboDetraccion2"
+                        >
+                            <items>
+                                <c:Item
+                                    key="{localModel>key}"
+                                    text="{localModel>text}"
+                                    enabled="true"
+                                />
+                            </items>
+                        </ComboBox>
+
+                        <Label text="Impuesto" />
+                        <Input
+                            value="{path: 'localModel>/preRegistro/IMPUESTOIMPORTE' , formatter: '.formatter.formatoMoneda'}"
+                            id="IMPUESTOIMPORTE2"
+                            change="onChangeImporte"
+                            type="Text"
+                            showValueHelp="false"
+                            editable="false"
+                            textAlign="Right"
+                            enabled="true"
+                            visible="true"
+                            width="auto"
+                            valueHelpOnly="false"
+                            maxLength="0"
+                        />
+                        <Input
+                            value="{localModel>/preRegistro/MONEDA}"
+                            type="Text"
+                            showValueHelp="false"
+                            editable="false"
+                            enabled="true"
+                            visible="true"
+                            width="auto"
+                            valueHelpOnly="false"
+                            maxLength="0"
+                        />
+
+                        <!-- <Select id="slDetraccionPeru" forceSelection="true" change="onSelectChange" items="{
+                                path:'localModel>/comboDetraccion'
+                            }" selectedKey="{
+                            path: 'localModel>/selectDetraccion'
+                            }">
+                                <c:Item key="{localModel>id}" text="{localModel>name}" enabled="{= ${localModel>id} === '0' ? false : true }"></c:Item>
+                        </Select> -->
+                    </f:content>
+                </f:SimpleForm>
+            </VBox>
+        </content>
+        <content>
+            <IconTabBar
+                id="iconTabBarPeru2"
+                headerMode="Inline"
+                class="sapUiResponsiveContentPadding"
+                selectedKey="{ path: 'formularioSimple>/tabSelect'}"
+            >
+                <items>
+                    <IconTabFilter
+                        icon="sap-icon://information"
+                        key="0"
+                        text="Artículo"
+                    >
+                        <Table
+                            id="tblViewRegistro2"
+                            backgroundDesign="Solid"
+                            showSeparators="All"
+                            growing="true"
+                            growingThreshold="20"
+                            growingScrollToLoad="true"
+                            sticky="HeaderToolbar,ColumnHeaders"
+                            inset="false"
+                            class="sapFDynamicPageAlignContent"
+                            alternateRowColors="true"
+                            width="auto"
+                            items="{ path: 'localModel>/selectedRowsPreFacturaDetalle' 
+									}"
+                        >
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <Title
+                                        text="Total Documentos ({= ${localModel>/selectedRowsPreFacturaDetalle}.length })"
+                                        level="H2"
+                                    />
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column
+                                    width="10%"
+                                    hAlign="Left"
+                                    vAlign="Center"
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                    popinDisplay="Inline"
+                                    mergeDuplicates="false"
+                                >
+                                    <header>
+                                        <Text
+                                            text="OC. "
+                                            width="auto"
+                                            maxLines="1"
+                                            wrapping="false"
+                                            textAlign="Begin"
+                                            textDirection="Inherit"
+                                        />
+                                    </header>
+                                    <footer />
+                                </Column>
+
+                                <Column
+                                    width="10%"
+                                    hAlign="Left"
+                                    vAlign="Center"
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                    popinDisplay="Inline"
+                                    mergeDuplicates="false"
+                                >
+                                    <header>
+                                        <Text
+                                            text="Pos. OC. "
+                                            width="auto"
+                                            maxLines="1"
+                                            wrapping="false"
+                                            textAlign="Begin"
+                                            textDirection="Inherit"
+                                        />
+                                    </header>
+                                    <footer />
+                                </Column>
+
+                                <Column
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                    width="7em"
+                                    hAlign="Center"
+                                >
+                                    <Text text="Nro Guia" />
+                                </Column>
+                                <Column
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                    width="10em"
+                                >
+                                    <Text
+                                        text="Descripcion artículo/servicio"
+                                    />
+                                </Column>
+                                <Column
+                                    minScreenWidth="Desktop"
+                                    demandPopin="true"
+                                    width="6em"
+                                >
+                                    <Text text="Fecha Entrega" />
+                                </Column>
+                                <Column
+                                    minScreenWidth="Desktop"
+                                    demandPopin="true"
+                                    width="6em"
+                                    hAlign="Center"
+                                >
+                                    <Text text="Doc. de Mercancia" />
+                                </Column>
+
+                                <Column
+                                    minScreenWidth="Tablet"
+                                    width="3em"
+                                    hAlign="Center"
+                                >
+                                    <Text text="Nro" />
+                                </Column>
+
+                                <Column
+                                    minScreenWidth="Desktop"
+                                    demandPopin="true"
+                                    width="5em"
+                                    hAlign="Center"
+                                >
+                                    <Text text="Cant. Entrega" />
+                                </Column>
+                                <Column
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                    width="5em"
+                                >
+                                    <Text text="Importe" />
+                                </Column>
+
+                                <Column
+                                    minScreenWidth="Desktop"
+                                    demandPopin="true"
+                                    width="7em"
+                                    hAlign="Center"
+                                >
+                                    <Text text="Tipo Impuesto" />
+                                </Column>
+
+                                <Column
+                                    minScreenWidth="Desktop"
+                                    demandPopin="true"
+                                    width="7em"
+                                    hAlign="Center"
+                                >
+                                    <Text text="Impuesto" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Link
+                                            text="{path : 'localModel>PEDIDO' }"
+                                            textAlign="Begin"
+                                            width="auto"
+                                            target="_blank"
+                                            wrapping="false"
+                                            enabled="true"
+                                            visible="true"
+                                            emphasized="false"
+                                            subtle="false"
+                                        />
+
+                                        <Text
+                                            text="{localModel>EBELP}"
+                                            width="auto"
+                                            maxLines="1"
+                                            wrapping="false"
+                                            textAlign="Begin"
+                                            textDirection="Inherit"
+                                        />
+
+                                        <Text
+                                            text="{localModel>NRO_GUIA_REMISION}"
+                                            width="auto"
+                                            maxLines="1"
+                                            wrapping="false"
+                                            textAlign="Begin"
+                                            textDirection="Inherit"
+                                        />
+                                        <!-- <ObjectIdentifier title="{path : 'localModel>ARTICULO', formatter : '.formatter.formatoArticulo'} - {path :'localModel>DESCRIPCION_ARTICULO', formatter: '.formatter.capitalizar'}"/> -->
+                                        <ObjectIdentifier
+                                            title="{path :'localModel>DES_ARTICULO', formatter: '.formatter.capitalizar'}"
+                                        />
+                                        <Text
+                                            text="{path: 'localModel>FEC_ENTREGA', formatter: '.formatoFecha'}"
+                                            width="auto"
+                                            maxLines="1"
+                                            wrapping="false"
+                                            textAlign="Begin"
+                                            textDirection="Inherit"
+                                        /> 
+                                        
+                                        <!-- <Link text="{path : 'localModel>NRO_PARTE_ENTRADA', formatter : '.formatter.formatoArticulo'}" enabled="true" visible="true" emphasized="false" subtle="false"/> -->
+                                        <!-- <Link text="{path : 'localModel>POS_PARTE_ENTRADA', formatter:'.formatter.formatoPosicion'}" textAlign="Begin" width="auto" target="_blank" wrapping="false" enabled="true" visible="true" emphasized="false" subtle="false"/> -->
+                                        <Text
+                                            text="{path : 'localModel>MBLNR', formatter : '.formatter.formatoArticulo'}"
+                                            width="auto"
+                                            maxLines="1"
+                                            wrapping="false"
+                                            textAlign="Begin"
+                                            textDirection="Inherit"
+                                        />
+                                        <Text
+                                            text="{path : 'localModel>ZEILE', formatter : '.formatter.formatoPosicion'}"
+                                            width="auto"
+                                            maxLines="1"
+                                            wrapping="false"
+                                            textAlign="Begin"
+                                            textDirection="Inherit"
+                                        />
+
+                                        <ObjectNumber
+                                            number="{path: 'localModel>CANT_ENTREGA', formatter:'.formatter.formatoCantidad'}"
+                                            unit="{localModel>UNIDAD_ENTREGA}"
+                                            emphasized="true"
+                                            state="None"
+                                        />
+                                        <ObjectNumber
+                                            number="{path:'localModel>AMOUNT', formatter:'.formatter.formatoMoneda'}"
+                                            unit="{localModel>CURRENCY}"
+                                            emphasized="true"
+                                            state="None"
+                                        />
+
+                                        <ObjectIdentifier
+                                            title="{path:'localModel>TAX_POSICION'}"
+                                        />
+
+                                        <ObjectNumber
+                                            number="{path:'localModel>TAX_AMOUNT', formatter:'.formatter.formatoMoneda'}"
+                                            unit="{localModel>CURRENCY}"
+                                            emphasized="true"
+                                            state="None"
+                                        />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </IconTabFilter>
+                    <IconTabSeparator />
+                    <IconTabFilter
+                        count="{= ${localModel>/preRegistro/dataAttached}.length }"
+                        icon="sap-icon://attachment-html"
+                        key="3"
+                        text="Adjuntar Documentos"
+                    >
+                        <Toolbar />
+                        <Table
+                            width="100%"
+                            noDataText="Debe ingresar el archivo."
+                            items="{localModel>/preRegistro/dataAttached}"
+                            mode="None"
+                            showSeparators="All"
+                            growing="true"
+                            growingThreshold="20"
+                            growingScrollToLoad="true"
+                        >
+                            <infoToolbar />
+                            <columns>
+                                <Column
+                                    width="20%"
+                                    hAlign="Left"
+                                    vAlign="Top"
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                    popinDisplay="Inline"
+                                    mergeDuplicates="false"
+                                >
+                                    <header>
+                                        <Text
+                                            text="Nombre documento"
+                                            width="auto"
+                                            maxLines="1"
+                                            wrapping="false"
+                                            textAlign="Begin"
+                                            textDirection="Inherit"
+                                        />
+                                    </header>
+                                    <footer />
+                                </Column>
+                                <Column
+                                    width="45%"
+                                    hAlign="Left"
+                                    vAlign="Top"
+                                    minScreenWidth="Tablet"
+                                    demandPopin="false"
+                                    popinDisplay="Inline"
+                                    mergeDuplicates="false"
+                                >
+                                    <header>
+                                        <Text
+                                            text="Texto descriptivo"
+                                            width="auto"
+                                            maxLines="1"
+                                            wrapping="false"
+                                            textAlign="Begin"
+                                            textDirection="Inherit"
+                                        />
+                                    </header>
+                                    <footer />
+                                </Column>
+                                <Column
+                                    width="20%"
+                                    hAlign="Center"
+                                    vAlign="Top"
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                    popinDisplay="Inline"
+                                    mergeDuplicates="false"
+                                >
+                                    <header>
+                                        <Text
+                                            text="Clase de Documento"
+                                            width="auto"
+                                            maxLines="1"
+                                            wrapping="false"
+                                            textAlign="Begin"
+                                            textDirection="Inherit"
+                                        />
+                                    </header>
+                                    <footer />
+                                </Column>
+                                <Column
+                                    width="5%"
+                                    hAlign="Left"
+                                    vAlign="Top"
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                    popinDisplay="Inline"
+                                    mergeDuplicates="false"
+                                >
+                                    <header>
+                                        <Text
+                                            text="Tipo"
+                                            width="auto"
+                                            maxLines="1"
+                                            wrapping="false"
+                                            textAlign="Begin"
+                                            textDirection="Inherit"
+                                        />
+                                    </header>
+                                    <footer />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem type="Active">
+                                    <cells>
+                                        <ObjectIdentifier
+                                            width="35%"
+                                            title="{localModel>NOMBRE_ADJUNTO}"
+                                            text=""
+                                            titleActive="true"
+                                            titlePress="viewImage"
+                                            visible="true"
+                                        />
+                                        <Text
+                                            text="{localModel>NOMBRE_ADJUNTO}"
+                                            width="auto"
+                                            maxLines="1"
+                                            wrapping="false"
+                                            textAlign="Begin"
+                                            textDirection="Inherit"
+                                        />
+                                        <Text
+                                            text="{localModel>TIPO_CLASE_DOC_DESC}"
+                                            width="auto"
+                                            maxLines="1"
+                                            wrapping="false"
+                                            textAlign="Begin"
+                                            textDirection="Inherit"
+                                        />
+                                        <ObjectNumber
+                                            number="{localModel>TIPO}"
+                                            unit=""
+                                            emphasized="true"
+                                            state="None"
+                                        />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </content>
+        <footer>
+            <Toolbar>
+                <content>
+                    <ToolbarSpacer />
+                    <Button
+                        id="btnCerrar"
+                        text="Cerrar"
+                        icon="sap-icon://close-command-field"
+                        press="onCloseDetallePreFacturaPeru"
+                        ariaHasPopup="Dialog"
+                    />
+                </content>
+            </Toolbar>
+        </footer>
+    </Dialog>
+</c:FragmentDefinition>

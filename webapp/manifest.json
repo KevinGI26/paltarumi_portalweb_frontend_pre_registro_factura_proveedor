@@ -1,0 +1,133 @@
+{
+  "_version": "1.49.0",
+  "sap.app": {
+    "id": "paltarumi.portalweb.registroprefactura",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.10.3",
+      "toolsId": "008975c7-23f2-4880-be5e-4fd6200d5349"
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "intent1": {
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          },
+          "semanticObject": "registroprefacturacontador",
+          "action": "display",
+          "title": "Registro Pre Factura",
+          "info": "",
+          "subTitle": "",
+          "icon": "sap-icon://receipt"
+        }
+      }
+    }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "paltarumi.portalweb.registroprefactura"
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.116.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.suite.ui.generic.template": {},
+        "sap.ui.comp": {},
+        "sap.ui.generic.app": {},
+        "sap.ui.table": {},
+        "sap.ushell": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "paltarumi.portalweb.registroprefactura.i18n.i18n"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "./css/style.css"
+        }
+      ],
+      "js": [
+        {
+          "uri": "./libs/moment.min.js"
+        }
+      ]
+    },
+    "resourceRoots": {
+      "it.designfuture.moment": "./libs/moment.min"
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "paltarumi.portalweb.registroprefactura.view",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "clearControlAggregation": false
+      },
+      "routes": [
+        {
+          "pattern": "",
+          "name": "home",
+          "target": "targetRegistroPreFacturaContador"
+        },
+        {
+          "pattern": "RegistroPreFacturaContador",
+          "name": "RegistroPreFacturaContadorRoute",
+          "target": "targetRegistroPreFacturaContador"
+        }
+      ],
+      "targets": {
+        "targetRegistroPreFacturaContador": {
+          "viewName": "MainView",
+          "viewLevel": 1,
+          "viewId": "idRegistroPreFacturaContador"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "paltarumi.portalweb.registroprefactura.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "App"
+    }
+  }
+}

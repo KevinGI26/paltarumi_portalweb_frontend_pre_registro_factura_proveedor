@@ -1,0 +1,899 @@
+<mvc:View
+    controllerName="paltarumi.portalweb.registroprefactura.controller.MainView"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:u="sap.ui.unified"
+    xmlns:ui="sap.ui.unified"
+    height="100%"
+>
+    <f:DynamicPage
+        id="dynamicPageId"
+        showFooter="true"
+        headerExpanded="{/headerExpanded}"
+    >
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="Pre-Registro de Facturas" />
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <!-- <HBox class="contentMessagetrip"> -->
+                <MessageStrip
+                    text="{path: 'localModel>/lineaMensaje'}"
+                    type="Success"
+                    showIcon="true"
+                    showCloseButton="true"
+                    class="messagetrip"
+                    id="msgStrip"
+                    visible="{path: 'localModel>/bValidLineaMensaje'}"
+                />
+                <!-- </HBox> -->
+                <layout:HorizontalLayout
+                    allowWrapping="true"
+                    visible="{localModel>/ProveedorSeleccionadoVisible}"
+                >
+                    <layout:VerticalLayout class="datos">
+                        <!-- <ObjectAttribute class="texto-header" title="Nombre" text="{localModel>/ProveedorSeleccionado/nombre}"/>
+                        <ObjectAttribute class="texto-header" title="Razón Social" text="{localModel>/ProveedorSeleccionado/razonSocial}" />
+                        <ObjectAttribute class="texto-header" title="RUC" text="{localModel>/ProveedorSeleccionado/usuario}" active="true" /> -->
+                        <ObjectAttribute
+                            class="texto-header"
+                            title="Nombre"
+                            text="{localModel>/ProveedorSeleccionado/NOMBRE}"
+                        />
+                        <ObjectAttribute
+                            class="texto-header"
+                            title="Razón Social"
+                            text="{localModel>/ProveedorSeleccionado/RAZON_SOCIAL}"
+                        />
+                        <ObjectAttribute
+                            class="texto-header"
+                            title="RUC"
+                            text="{localModel>/ProveedorSeleccionado/USUARIO}"
+                            active="true"
+                        />
+                    </layout:VerticalLayout>
+                    <ToolbarSpacer />
+                </layout:HorizontalLayout>
+                <f:content>
+                    <fb:FilterBar
+                        reset="onLimpiarFiltros"
+                        clear="onLimpiarFiltros"
+                        search="onSearch"
+                        useToolbar="false"
+                        showGoOnFB="true"
+                        showAllFilters="true"
+                        showClearOnFB="false"
+                        showFilterConfiguration="true"
+                        showRestoreButton="true"
+                        showRestoreOnFB="true"
+                        id="filterbar"
+                        persistencyKey="myPersKey"
+                        filterChange=".onFilterChange"
+                        afterVariantLoad=".onAfterVariantLoad"
+                    >
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem
+                                name="Sociedad"
+                                label="Sociedad"
+                                groupName="Group1"
+                                visibleInFilterBar="true"
+                            >
+                                <fb:control>
+                                    <ComboBox
+                                        placeholder="Sociedad"
+                                        id="cbSociedad"
+                                        width="100%"
+                                        items="{
+                                                path: 'modelSociedadesGlobalCompras>/listSocieties'
+                                            }"
+                                        selectedKey="{
+                                                path: 'localModel>/filtrosSociedad'
+                                            }"
+                                        selectionChange="onChangeSociedad"
+                                        required="true"
+                                    >
+                                        <core:Item
+                                            key="{modelSociedadesGlobalCompras>cod}"
+                                            text="{modelSociedadesGlobalCompras>name}"
+                                        />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem
+                                name="Proveedor"
+                                label="Proveedor"
+                                groupName="Group1"
+                                visibleInFilterBar="true"
+                            >
+                                <fb:control>
+                                    <Input
+                                        id="proveedorInput"
+                                        enabled="false"
+                                        required="true"
+                                        placeholder="Seleccione proveedor"
+                                        valueHelpOnly="true"
+                                        showValueHelp="true"
+                                        valueHelpRequest="onValueHelpRequest"
+                                        width="auto"
+                                        value="{localModel>/ProveedorSeleccionado/razonSocial}"
+                                    />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <!-- <fb:FilterGroupItem name="a" label="Sociedad" visibleInFilterBar="true" groupName="Group1">
+                                <fb:control>
+                                    <ComboBox placeholder="Seleccione"
+                                    enabled = "{localModel>/bEnabledSociedadEncontrada}"
+                                            id = "cbSociedad" width="15em" items="{
+                                                path: 'localModel>/listaSociedad',
+                                                sorter: { path: 'Name' }
+                                                
+                                            }" required="true" selectedKey="{
+                                                path: 'localModel>/filtrosSociedad'
+                                            }" selectionChange="onChangeSociedad">
+                                        <core:Item key="{localModel>key}" text="{localModel>text}"/>
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem> -->
+
+                            <fb:FilterGroupItem
+                                name="b"
+                                label="Fecha Inicio de Compras"
+                                visibleInFilterBar="true"
+                                groupName="Group1"
+                            >
+                                <fb:control>
+                                    <!-- <DatePicker id="idDatePickerInicioCompras" placeholder="Ingrese Fecha Inicio Compras" change="onSelectChange" valueFormat="dd/MM/yyyy" displayFormat="dd/MM/yyyy" value="{path:'localModel>/filtros/fFechaEmision'}" textAlign="End" /> -->
+                                    <DatePicker
+                                        id="idDatePickerInicioCompras"
+                                        placeholder="Ingrese Fecha Inicio Compras"
+                                        change="onSelectChange"
+                                        valueFormat="dd/MM/yyyy"
+                                        displayFormat="dd/MM/yyyy"
+                                        value="{
+											path: 'localModel>/filtros/fFechaEmision'
+										}"
+                                        required="true"
+                                        maxDate="{
+											path: 'localModel>/maxDateFechaHasta'
+										}"
+                                    />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem
+                                name="c"
+                                label="Fecha Fin de Compras"
+                                visibleInFilterBar="true"
+                                groupName="Group1"
+                            >
+                                <fb:control>
+                                    <!-- <DatePicker id="idDatePickerFinCompras" placeholder="Ingrese Fecha Fin Compras" change="onSelectChange" valueFormat="dd/MM/yyyy" displayFormat="dd/MM/yyyy" value="{path:'localModel>/filtros/fFechamasuno'}" textAlign="End"/> -->
+                                    <DatePicker
+                                        id="idDatePickerFinCompras"
+                                        placeholder="Ingrese Fecha Fin Compras"
+                                        change="onSelectChange"
+                                        valueFormat="dd/MM/yyyy"
+                                        displayFormat="dd/MM/yyyy"
+                                        value="{
+											path: 'localModel>/filtros/fFechamasuno'
+										}"
+                                        required="true"
+                                        maxDate="{
+											path: 'localModel>/maxDateFechaHasta'
+										}"
+                                    />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem
+                                name="d"
+                                label="Estado"
+                                visibleInFilterBar="true"
+                                groupName="Group1"
+                            >
+                                <fb:control>
+                                    <MultiComboBox
+                                        placeholder="Seleccione"
+                                        enabled="false"
+                                        id="mcRolMainView2"
+                                        width="15em"
+                                        showSelectAll="true"
+                                        items="{
+                                                path: 'localModel>/listaMultipleEstadoRegistro',
+                                                sorter: { path: 'Name' }
+                                            }"
+                                        selectedKeys="{
+                                                path: 'localModel>/filtrosEstadoRegistro'
+                                            }"
+                                        selectionChange="onEstadoCambio"
+                                    >
+                                        <core:Item
+                                            key="{localModel>key}"
+                                            text="{localModel>text}"
+                                        />
+                                    </MultiComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+                    <ToolbarSpacer />
+                </f:content>
+                <ToolbarSpacer />
+
+                <VBox class="fixed-top-content">
+                    <layout:HorizontalLayout>
+                        <layout:VerticalLayout>
+                            <Title
+                                text="Total Documentos ({= ${localModel>/ListaComprobantes}.length })"
+                                level="H2"
+                            />
+
+                            <ToolbarSpacer />
+                            <SearchField
+                                enableSuggestions="true"
+                                id="search"
+                                placeholder="Buscar Documento...."
+                                width="300%"
+                                class="search"
+                                liveChange="onLiveChangeBusqueda"
+                                value="{path : 'localModel>/search'}"
+                            />
+                        </layout:VerticalLayout>
+                    </layout:HorizontalLayout>
+                </VBox>
+                <!-- <f:content >
+                 <layout:VerticalLayout class="dato">
+          <Title text="Total Documentos ({= ${localModel>/ListaComprobantes}.length })" level="H2"/>
+                            <ToolbarSpacer/>
+                            <SearchField enableSuggestions="true" id="search" placeholder="Buscar Documento...." width="200%" class="search" liveChange="onLiveChangeBusqueda" value="{
+                                            path : 'localModel>/search'}"/>
+                 </layout:VerticalLayout>
+        </f:content > -->
+            </f:DynamicPageHeader>
+        </f:header>
+
+        <f:content>
+            <ScrollContainer
+                height="100%"
+                width="100%"
+                vertical="true"
+                focusable="true"
+            >
+                <Table
+                    id="tblPreRegistro"
+                    width="100%"
+                    noDataText="No data"
+                    mode="MultiSelect"
+                    showSeparators="All"
+                    growing="true"
+                    growingThreshold="20"
+                    growingScrollToLoad="true"
+                    sticky="HeaderToolbar,InfoToolbar,ColumnHeaders"
+                    selectionChange="onSeleccionFila"
+                    fixedLayout="false"
+                    items="{path: 'localModel>/ListaComprobantes' }"
+                >
+                    <infoToolbar />
+
+                    <!-- <headerToolbar>
+                        <OverflowToolbar style="Clear">
+                            <Title text="Total Documentos ({= ${localModel>/ListaComprobantes}.length })" level="H2"/>
+                            <ToolbarSpacer/>
+                            <SearchField enableSuggestions="true" id="search" placeholder="Buscar...." width="30%" class="search" liveChange="onLiveChangeBusqueda" value="{
+                                            path : 'localModel>/search'}"/>
+                            
+                            
+
+                        </OverflowToolbar>
+                    </headerToolbar> -->
+
+                    <columns>
+                        <Column
+                            id="idParteIngresoPreFact"
+                            width="10%"
+                            hAlign="Left"
+                            vAlign="Middle"
+                            minScreenWidth="Phone"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <!--<Text text="Parte Entrada" width="10rem" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>-->
+                                <Text
+                                    text="Parte de Ingreso"
+                                    width="7rem"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+                        <Column
+                            id="idPosParteEntradaPreFact"
+                            width="4%"
+                            hAlign="Left"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="false"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Pos. Parte"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+                        <Column
+                            id="idHojaEntradaPreFact"
+                            width="10%"
+                            hAlign="Left"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Hoja Entrada"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+                        <Column
+                            id="idNotaEntregaPreFact"
+                            width="10%"
+                            hAlign="Left"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Nota Entrega"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+
+                        <Column
+                            id="idFechaContPreFact"
+                            width="8%"
+                            hAlign="Right"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="false"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Fech. Cont."
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+                        <Column
+                            id="idDescripcionArtServPreFact"
+                            width="320px"
+                            hAlign="Left"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Descripción artículo /servicio"
+                                    width="300px"
+                                    maxLines="2"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+                        <Column
+                            id="idCantEntregaPreFact"
+                            width="12%"
+                            hAlign="Right"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Cant. Entrega"
+                                    width="auto"
+                                    maxLines="2"
+                                    wrapping="true"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+                        <Column
+                            id="idImportePreFact"
+                            width="130px"
+                            hAlign="Right"
+                            vAlign="Middle"
+                            minScreenWidth="Tablet"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Importe"
+                                    width="130px"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Right"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+                        <Column
+                            id="idOrdenCompraPreFact"
+                            width="8%"
+                            hAlign="Right"
+                            vAlign="Middle"
+                            minScreenWidth="Phone"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <!--<Text text="Pedido" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>-->
+                                <Text
+                                    text="Orden de Compra"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+
+                        <Column
+                            id="idPoscOCPreFact"
+                            width="12%"
+                            hAlign="Right"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Posc. OC"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+
+                        <Column
+                            id="idComprobantePreFact"
+                            width="12%"
+                            hAlign="Right"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Comprobante"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+
+                        <Column
+                            id="idCorrelativoSCPPreFact"
+                            width="10%"
+                            hAlign="Right"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Correlativo SCP"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+                        <Column
+                            id="idEjercicioPreFact"
+                            width="10%"
+                            hAlign="Right"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Ejercicio"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+                        <Column
+                            id="idFechaRegistroPreFact"
+                            width="10%"
+                            hAlign="Right"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Fecha Registro"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+                        <Column
+                            id="idMotivoRechazoPreFact"
+                            width="10%"
+                            hAlign="Right"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Motivo Rechazo"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+                        <Column
+                            id="idFechaRechazoPreFact"
+                            width="10%"
+                            hAlign="Right"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Fecha Rechazo"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+                        <Column
+                            id="idHistorialRechazoPreFact"
+                            width="9%"
+                            hAlign="Right"
+                            vAlign="Middle"
+                            minScreenWidth="Desktop"
+                            demandPopin="true"
+                            popinDisplay="Inline"
+                            mergeDuplicates="false"
+                        >
+                            <header>
+                                <Text
+                                    text="Historial de Rechazo"
+                                    width="auto"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                            </header>
+                            <footer />
+                        </Column>
+                        <!--<Column width="10%" hAlign="Right" vAlign="Top" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">-->
+                        <!--  <header>-->
+                        <!--        <Text text="Documento Sap" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>-->
+                        <!--  </header>-->
+                        <!--  <footer/>-->
+                        <!--</Column>-->
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <customData>
+                                <core:CustomData
+                                    key="customStyleRow"
+                                    value="{localModel>ID_ESTADO_REG_PRELIMINAR_STR}"
+                                    writeToDom="true"
+                                />
+                            </customData>
+                            <cells>
+                                <Link
+                                    text="{localModel>NRO_PARTE_ENTRADA}"
+                                    textAlign="Center"
+                                    width="auto"
+                                    target="_blank"
+                                    wrapping="false"
+                                    enabled="true"
+                                    visible="true"
+                                    emphasized="false"
+                                    subtle="false"
+                                    tooltip="{localModel>COMENTARIO}"
+                                />
+                                <Text
+                                    text="{path:'localModel>POS_PARTE_ENTRADA',formatter:'.formatter.formatoPosicion'}"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                    tooltip="{localModel>COMENTARIO}"
+                                />
+                                <Text
+                                    text="{localModel>HES}"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                                <Text
+                                    text="{localModel>NRO_GUIA_REMISION}"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                    tooltip="{localModel>COMENTARIO}"
+                                />
+
+                                <Text
+                                    text="{path: 'localModel>FECHA_ENTREGA', formatter: '.formatter.formatoFecha'}"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="true"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                    tooltip="{localModel>COMENTARIO}"
+                                />
+                                <!-- <ObjectIdentifier title="{path : 'localModel>ARTICULO', formatter : '.formatter.formatoArticulo'} - {path :'localModel>DESCRIPCION_ARTICULO', formatter: '.formatter.capitalizar'}" tooltip="{localModel>COMENTARIO}"/> -->
+                                <ObjectIdentifier
+                                    title="{path :'localModel>ARTICULO_DESC', formatter: '.formatter.capitalizar'}"
+                                    tooltip="{localModel>COMENTARIO}"
+                                />
+                                <ObjectNumber
+                                    number="{path: 'localModel>CANTIDAD_ENTREGADA', formatter:'.formatter.formatoCantidad'}"
+                                    unit="{localModel>UNIDAD_MEDIDA}"
+                                    emphasized="true"
+                                    state="None"
+                                    tooltip="{localModel>COMENTARIO}"
+                                />
+                                <ObjectNumber
+                                    number="{path:'localModel>IMPORTE', formatter:'.formatter.formatoMoneda'}"
+                                    unit="{localModel>MONEDA}"
+                                    emphasized="true"
+                                    state="None"
+                                    tooltip="{localModel>COMENTARIO}"
+                                />
+                                <Text
+                                    text="{localModel>PEDIDO_REFERENCIA}"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                    tooltip="{localModel>COMENTARIO}"
+                                />
+                                <Text
+                                    text="{localModel>POS_PED_REFERENCIA}"
+                                    textAlign="Center"
+                                    width="auto"
+                                    wrapping="false"
+                                    visible="true"
+                                />
+                                <Text
+                                    text="{localModel>NRO_COMPROBANTE}"
+                                    textAlign="Center"
+                                    width="auto"
+                                    wrapping="false"
+                                    visible="true"
+                                    tooltip="{localModel>COMENTARIO}"
+                                />
+
+                                <Text
+                                    text="{localModel>CORRELATIVO_SCP}"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                                <Text
+                                    text="{localModel>EJERCICIO}"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                    tooltip="{localModel>COMENTARIO}"
+                                />
+                                <Text
+                                    text="{localModel>FECHA_REGISTRO}"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                                <Text
+                                    text="{localModel>COMENTARIO}"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                    tooltip="{localModel>COMENTARIO}"
+                                />
+                                <Text
+                                    text="{localModel>FECHA_RECHAZO}"
+                                    width="auto"
+                                    maxLines="1"
+                                    wrapping="false"
+                                    textAlign="Begin"
+                                    textDirection="Inherit"
+                                />
+                                <Link
+                                    text="Historial Rechazo"
+                                    textAlign="Center"
+                                    press="onShowHistorialRechazoPreFact"
+                                    width="auto"
+                                    target="_blank"
+                                    wrapping="false"
+                                    enabled="true"
+                                    visible="{localModel>visibleHistorial}"
+                                    emphasized="false"
+                                    subtle="false"
+                                />
+                                <!--<Text text="{localModel>DOCUMENTO_SAP}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>-->
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </ScrollContainer>
+        </f:content>
+        <f:content />
+
+        <f:footer>
+            <OverflowToolbar id="otbFooter">
+                <!-- <Button type="Accept" text="Buzón" press="onAbrirBuzón" visible="{localModel>/tieneCorreos}">
+					<layoutData><OverflowToolbarLayoutData priority="NeverOverflow" /></layoutData>
+				</Button> -->
+                <Button
+                    type="Reject"
+                    text="Cerrar"
+                    visible="false"
+                >
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="NeverOverflow" />
+                    </layoutData>
+                </Button>
+
+                <!-- </OverflowToolbar> -->
+
+                <!-- <OverflowToolbar id="otbFooter" > -->
+                <ToolbarSpacer />
+                <Button
+                    type="Transparent"
+                    text="TEST"
+                    icon="sap-icon://receipt"
+                    press="onTestPP"
+                    visible="false"
+                />
+                <Button
+                    type="Transparent"
+                    text="Guardar Factura"
+                    icon="sap-icon://receipt"
+                    press="onCrearPreFactura"
+                />
+                <Button
+                    type="Transparent"
+                    text="Exportar datos"
+                    icon="sap-icon://documents"
+                    press="exportarExcel"
+                />
+                <!-- <Button type="Transparent" text="Configuración" icon="sap-icon://action-settings" press="onConfigurarColumnas"/> -->
+                <Button
+                    type="Transparent"
+                    text="Configuración"
+                    icon="sap-icon://action-settings"
+                    press="onConfigurarColumnasMejorado"
+                />
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
+</mvc:View>

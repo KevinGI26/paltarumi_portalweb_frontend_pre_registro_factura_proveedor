@@ -1,0 +1,63 @@
+/* Enter your custom styles here */
+.imgheader{
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+.img{
+    padding-top: 25px;
+}
+
+.datos{
+    margin-top: 10px;
+}
+
+.texto-header{
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.lblformato{
+    margin-top: 10px;
+}
+
+.textomain{
+    font-weight: bold;
+}
+
+.textomain-popover{
+    font-weight: bold;
+    align-items: center;
+    padding: 30px;
+}
+
+.txtTabla{
+    color: grey;
+    text-align: end;
+}
+
+
+.contentMessagetrip {
+    justify-content: center !important; 
+    position: relative;
+    align-items: center;
+    text-align: center;
+}
+.messagetrip{
+    margin: 5px;
+}
+
+tr[data-customStyleRow="2"]{
+    background: #ffcccc!important;
+  }
+
+  .dato{
+    margin-top: 20px;
+}
+
+.fixed-top-content {
+    padding: 10px; /* Ajusta el padding según tus necesidades */
+}
+
+
+  

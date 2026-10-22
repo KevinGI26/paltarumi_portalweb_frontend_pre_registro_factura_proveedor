@@ -1,0 +1,15 @@
+{
+  "name": "paltarumi-portalweb-registroprefactura",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Registro Pre Factura Contador - HTML5 app para SAP Build Work Zone (con mock local)",
+  "scripts": {
+    "start": "npx http-server webapp -p 8080 -c-1",
+    "build:cf": "node build.js",
+    "build": "mbt build -t ./mta_archives --mtar registroprefactura.mtar",
+    "deploy": "cf deploy mta_archives/registroprefactura.mtar -f"
+  },
+  "devDependencies": {
+    "archiver": "^7.0.1"
+  }
+}

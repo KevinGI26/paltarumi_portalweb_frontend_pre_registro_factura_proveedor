@@ -1,0 +1,180 @@
+{
+  "infoGlobalUsuario": {
+    "infoGlobalUsuario": {
+      "Token": "eyJraWQiOiJURlpzcGxERGxWU2NDbnIrRlVzK1V0aVg1TUpaQU1aUnozZWk5R3BUMm4wPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJiMTJiODU1MC01MGExLTcwZDEtZWQzZi04OTJiMDYxMGE2NzIiLCJjdXN0b206cm9sZXMiOiIwNCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc3MiOiJodHRwczovL2NvZ25pdG8taWRwLnVzLWVhc3QtMi5hbWF6b25hd3MuY29tL3VzLWVhc3QtMl8zc1pBQXV6V2oiLCJjb2duaXRvOnVzZXJuYW1lIjoiZ2tjb210IiwiZ2l2ZW5fbmFtZSI6IkdpYW5mcmFuY28iLCJvcmlnaW5fanRpIjoiMzU5YzQxNjktNDdiOC00ZDFiLTlmMDQtMGI1OTU4Y2I3M2JhIiwiYXVkIjoiMm8wdDNvNTkwMnRodWMzdG91a3IyMjdwNXQiLCJldmVudF9pZCI6ImY2NjYwMzczLTkzMWMtNDRiMy05YmNjLTk1MjY0MWE0YmU5MCIsInRva2VuX3VzZSI6ImlkIiwiY3VzdG9tOnJhem9uU29jaWFsIjoiLSIsImF1dGhfdGltZSI6MTc5MjA3OTUwOSwibmFtZSI6IkdpYW5mcmFuY28iLCJjdXN0b206dGVuYW50IjoicGFsdGFydW1pLXByZC1wcCIsImV4cCI6MTc5MjA5MDMwOSwiaWF0IjoxNzkyMDc5NTA5LCJmYW1pbHlfbmFtZSI6Iktjb210IERpYXoiLCJqdGkiOiIzMTNmNjA1ZC1lYjUwLTQ1MTktODYyYy04NTY5NWZhNGZhYjgiLCJlbWFpbCI6ImdrY29tdEBwYWx0YXJ1bWkuY29tLnBlIn0.AHJhf3NM07OF2PbRanHytD4zwCuu3xBsLakK4Jj6N_r0STfcPMi5k4zocePOCqeF7g8m4-V4sneTBB4KTI2pDYN3RcniyrEqym0YXnmPPGIt2aW4RELkHa0JRs3d0V5Gn_0Gc7A1UQ_wf7FNRYRe-BfnNhdpe5oUkMuirDhPYzmpD0KluY_bYkAjFJRoaVgfHCLa1OuecNM1Dg644lc4TUwEWN5jMpuBvc5bsoQ02QxSMyCdCVyG5OdAMP8gYwUmtynwVPG1VQjZcbB6rl9AbdXmVlAeRLUA5SU8y98R2w3r0m-1hAff8iUHyP4wdag27zwy5uXa2XIhMzypqRDb9A",
+      "Accesos": [
+        {
+          "Id": 0,
+          "CodEmpresa": "paltarumi-prd-pp",
+          "NombreGrupo": "Compras",
+          "DescripcionGrupo": "Rol Compras",
+          "Aplicaciones": [
+            {
+              "Id": 14,
+              "Codigo": "11",
+              "Nombre": "Historial Factura de Proveedores",
+              "Descripcion": "Historial Factura de Proveedores",
+              "Ico": "sap-icon://approvals",
+              "Url": "appHistorialFacturaContador"
+            },
+            {
+              "Id": 16,
+              "Codigo": "09",
+              "Nombre": "Historial Pago de Proveedores",
+              "Descripcion": "Historial Pago de Proveedores",
+              "Ico": "sap-icon://per-diem",
+              "Url": "appHistorialPagoContador"
+            },
+            {
+              "Id": 21,
+              "Codigo": "04",
+              "Nombre": "Pre-Registro Factura de Proveedores",
+              "Descripcion": "Pre-Registro Factura de Proveedores",
+              "Ico": "sap-icon://receipt",
+              "Url": "appRegistroPreFacturaContador"
+            }
+          ],
+          "sociedades": [
+            {
+              "sociedad": "5710"
+            }
+          ]
+        },
+        {
+          "Id": 1,
+          "CodEmpresa": "paltarumi-prd-pp",
+          "NombreGrupo": "Administrador",
+          "DescripcionGrupo": "Rol Sistemas / Auditoría",
+          "Aplicaciones": [
+            {
+              "Id": 20,
+              "Codigo": "05",
+              "Nombre": "Usuario",
+              "Descripcion": "Usuario",
+              "Ico": "sap-icon://account",
+              "Url": "appUsuario"
+            },
+            {
+              "Id": 23,
+              "Codigo": "02",
+              "Nombre": "Maestros",
+              "Descripcion": "Maestros",
+              "Ico": "sap-icon://settings",
+              "Url": "appMaestro"
+            }
+          ],
+          "sociedades": [
+            {
+              "sociedad": "5710"
+            }
+          ]
+        },
+        {
+          "Id": 2,
+          "CodEmpresa": "paltarumi-prd-pp",
+          "NombreGrupo": "Contador",
+          "DescripcionGrupo": "Rol Contador",
+          "Aplicaciones": [
+            {
+              "Id": 17,
+              "Codigo": "08",
+              "Nombre": "Registro de Facturas",
+              "Descripcion": "Registro de Facturas",
+              "Ico": "sap-icon://accelerated",
+              "Url": "appRegistroFactura"
+            },
+            {
+              "Id": 19,
+              "Codigo": "06",
+              "Nombre": "OverView Contador",
+              "Descripcion": "OverView Contador",
+              "Ico": "sap-icon://business-objects-experience",
+              "Url": "appOverviewContador"
+            }
+          ],
+          "sociedades": [
+            {
+              "sociedad": "5710"
+            }
+          ]
+        }
+      ],
+      "Empresa": [
+        {
+          "CodEmpresa": "paltarumi-prd-pp",
+          "RazonSocial": "paltarumi-prd-pp"
+        }
+      ],
+      "user": [
+        {
+          "ID": "c5d23d5c-089e-4d65-ba09-7177b577b4d4",
+          "ID_ESTADO": 1,
+          "CORREO": "gkcomt@paltarumi.com.pe",
+          "NOMBRE": "Gianfranco",
+          "APELLIDO": "Kcomt Diaz",
+          "TELEFONO": "",
+          "RUC": "",
+          "USUARIO": "GKCOMT",
+          "RAZON_SOCIAL": "",
+          "CODIGO_TIPO_EMISOR": "0",
+          "LISTA_ROLES": "04|03|02",
+          "CREATED_AT": "2026-01-28T20:20:19.463Z"
+        }
+      ]
+    }
+  },
+  "modelSociedadesGlobal": {
+    "listaSociedad": [],
+    "listSocieties": [
+      {
+        "id": "5befd722-e444-4b23-a6cc-e32e1eb474af",
+        "cod": "5710",
+        "name": "PALTARUMI S.A.C.",
+        "cod_country": "PE",
+        "schema_db": "tenant_paltarumi-prd-pp-5710",
+        "bucket_dm": "portal-proveedores/bucket-paltarumi-prd-pp/5710/",
+        "status_id": 1,
+        "tenant_id": "b8762ee4-8aab-4529-ac51-eaa91e50de3b",
+        "client_product_id": "fb9a628e-9dec-4602-ab81-f09ddec4c28d",
+        "tenant_name": "paltarumi-prd-pp",
+        "cd_domain": "seidorapps.ai",
+        "quantity_users": "151"
+      }
+    ]
+  },
+  "modelSociedadesGlobalCompras": {
+    "listaSociedad": [],
+    "listSocieties": [
+      {
+        "id": "5befd722-e444-4b23-a6cc-e32e1eb474af",
+        "cod": "5710",
+        "name": "PALTARUMI S.A.C.",
+        "cod_country": "PE",
+        "schema_db": "tenant_paltarumi-prd-pp-5710",
+        "bucket_dm": "portal-proveedores/bucket-paltarumi-prd-pp/5710/",
+        "status_id": 1,
+        "tenant_id": "b8762ee4-8aab-4529-ac51-eaa91e50de3b",
+        "client_product_id": "fb9a628e-9dec-4602-ab81-f09ddec4c28d",
+        "tenant_name": "paltarumi-prd-pp",
+        "cd_domain": "seidorapps.ai",
+        "quantity_users": "151"
+      }
+    ]
+  },
+  "modelInfoUsuario": {
+    "infoUsuario": {
+      "ID": "c5d23d5c-089e-4d65-ba09-7177b577b4d4",
+      "ID_ESTADO": 1,
+      "CORREO": "gkcomt@paltarumi.com.pe",
+      "NOMBRE": "Gianfranco",
+      "APELLIDO": "Kcomt Diaz",
+      "TELEFONO": "",
+      "RUC": "",
+      "USUARIO": "GKCOMT",
+      "RAZON_SOCIAL": "",
+      "CODIGO_TIPO_EMISOR": "0",
+      "LISTA_ROLES": "04|03|02",
+      "CREATED_AT": "2026-01-28T20:20:19.463Z"
+    }
+  }
+}
